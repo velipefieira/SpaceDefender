@@ -37,21 +37,23 @@ missil_rect = missil_img.get_rect()
 
 vida_img = pygame.image.load("imgs/vida.png")
 
-#lucky_img = pygame.image.load("imgs/lucky.png")
-#lucky_rect = lucky_img.get_rect()
+lucky_img = pygame.image.load("imgs/lucky.png")
+lucky_rect = lucky_img.get_rect()
 
 aliens_imgs = [alienvd_img, alienaz_img, alienvm_img, alienci_img]
+
+death = ["Alien verde", "Alien azul", "Alien vermelho", "Alien cinza", "(Un)Lucky Item", "Meteoro"]
 
 # Definindo viariáveis
 
 #nivel = {x, y, vel}
 lv_a = {
-    0: [largura - 50, random.randint(1, altura-50), 2],
-    1: [largura - 50, random.randint(1, altura-50), 2],
-    2: [largura - 50, random.randint(1, altura-50), 2.25],
-    3: [largura - 50, random.randint(1, altura-50), 2.5]}
+    0: [largura + 50, random.randint(1, altura-50), 2],
+    1: [largura + 50, random.randint(1, altura-50), 2],
+    2: [largura + 50, random.randint(1, altura-50), 2.25],
+    3: [largura + 50, random.randint(1, altura-50), 2.5]}
 
-#lk = [largura - 50, random.randint(1, altura-50)]
+lk = [largura + 50, random.randint(1, altura-50)]
 
 rodada = 1
 vida_player = 3
@@ -59,7 +61,7 @@ pontuacao = 0
 lv = 0
 vel = 2
 vel_missil = 0
-nivel = 1
+limite = random.randint(1, largura//2)
 
 player_x = random.randint(1, largura//4)
 player_y = random.randint(70, altura-50)
@@ -126,18 +128,21 @@ def colisao():
     else:
         return False
 
-#def render_lucky():
-#    tela.blit(lucky_img, (lk[0], lk[1]))
+def render_lucky():
+    tela.blit(lucky_img, (lk[0], lk[1]))
 
-#def sorte():
-    #if player_rect.colliderect(lucky_rect):
-        #return True
+def sorte():
+    if player_rect.colliderect(lucky_rect):
+        return True
+    else: return False
 
+
+jogando = True
 tiro = False
 perdeu = False
-jogando = True
+liberar_luck = False
 meteoro = False
-lucky = False
+luckys = [0]
 
 while jogando:
     for evento in pygame.event.get():
@@ -156,21 +161,20 @@ while jogando:
     if vida_player <= 0:
         perdeu = True
     
-    if perdeu == True:
+    if perdeu:
         fonte = pygame.font.SysFont("Arial", 32)
-        texto1 = fonte.render('Você perdeu!', True, (255, 255, 255))
-        texto2 = fonte.render('Pressione R para jogar novamente.', True, (255, 255, 255))
-        texto3 = fonte.render('Pressione ESC para sair.', True, (255, 255, 255))
-        tela.blit(texto1, (largura//2 - 80, altura//2 - 50))
-        tela.blit(texto2, (largura//2 - 200, altura//2))
-        tela.blit(texto3, (largura//2 - 155, altura//2 + 50))
-        player_x = -50
+        texto('Você perdeu!', "center", altura//2 - 30, 32)
+        texto('Pressione R para jogar novamente.', "center", altura//2, 32)
+        texto('Pressione ESC para sair.', "center", altura//2 + 30, 32)
+        texto(f"Você morreu para um {motivo}!", "center", altura//4, 32)
+        missil_x = -50
         tecla = pygame.key.get_pressed()
         if tecla[pygame.K_r]:
             vida_player = 3
             pontuacao = 0 
             for x in range(len(lv_a)):
-                lv_a[x][0], lv_a[x][1] = largura + 100, random.randint(1, altura)
+                lv_a[x][0], lv_a[x][1] = largura + 50, random.randint(1, altura - 50)
+                lk[0], lk[1] = largura + 50, random.randint(1, altura - 50)
             player_x, player_y, missil_x, missil_y, vel_missil = reiniciar()
             perdeu = False
         if tecla[pygame.K_ESCAPE]:
@@ -180,7 +184,7 @@ while jogando:
         render_missil()
         render_player()
         render_alien()
-        #render_lucky()
+        render_lucky()
 
     # Vinculando as colisões com as posições
     player_rect.x = player_x
@@ -191,6 +195,8 @@ while jogando:
     alienvm_rect.x, alienvm_rect.y = lv_a[2][0], lv_a[2][1]
     alienci_rect.x, alienci_rect.y = lv_a[3][0], lv_a[3][1]
 
+    lucky_rect.x, lucky_rect.y = lk[0], lk[1]
+
     missil_rect.x, missil_rect.y = missil_x, missil_y
 
     if colisao() is not False:
@@ -199,6 +205,8 @@ while jogando:
             respawn_alien(int(colisao()[0]))    
         else:
             vida_player -= 1
+            if not vida_player:
+                motivo = death[int(colisao()[0])]
             respawn_alien(int(colisao()[0]))  
     
     for x in range(4):
@@ -220,6 +228,32 @@ while jogando:
                     lv_a[x][1] += int(lv_a[x][2]) // 2    
                 if player_y - 40 <= lv_a[x][1] <= player_y + 40:
                     lv_a[x][1] += lv_a[x][2] * math.sin(largura - lv_a[x][0] / 100)
+
+    # Configurando os Un(Lucky) Itens
+    if pontuacao % 15 == 0 and pontuacao not in luckys:
+        lk[0] = limite
+        luckys.append(pontuacao)
+    
+    if sorte():
+        number = random.randint(1, 100)
+        tempo = pygame.time.get_ticks()
+        if number == 1:
+            meteoro = True
+        if 1 < number <= 50:
+            vel += 0.5
+        if 25 < number < 50:
+            vida_player -= 1
+            if not vida_player:
+                motivo = death[4]
+        if 50 <= number <= 75:
+            vida_player += 1
+        if 75 < number:
+            vel += 0.5
+            if number > 98:
+                pontuacao += 100
+        lk[0] = largura + 50
+        lk[1] = random.randint(1, altura-50)
+            
 
     # Configurando os comandos
     tecla = pygame.key.get_pressed()

@@ -124,7 +124,7 @@
   <tr>
     <td> Sistema de power-ups </td>
     <td> Permitir que o usuário colete power-ups de poder ou vida ao decorrero do jogo. </td>
-    <td> ✖️ Não iniciado </td>
+    <td> :white_check_mark: Concluído </td>
  </tr>
  <tr>
    <td> Multiplayer local </td>
