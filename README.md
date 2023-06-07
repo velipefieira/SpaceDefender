@@ -114,7 +114,7 @@
   <tr>
     <td> Sistema de fases e progresso </td>
     <td> Permitir que sejam gerados mais inimigos ao passar do tempo </td>
-    <td> ✖️ Não iniciado </td>
+    <td> :white_check_mark: Concluído </td>
   </tr>
   <tr>
     <td> Geração de obstáculos </td>
