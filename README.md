@@ -42,16 +42,28 @@
 
     cd SpaceDefender
 
-<h3> 5. Instale a biblioteca pygame com o seguinte código: </h3>
+<h3> 5. Se preferir, crie um ambiente virtual para rodar o jogo com os seguintes comandos (opcional): </h3>
 
-    pip install pygame
+    python -m venv venv
+
+<h3> 5.1 Caso tenha criado o ambiente virtual, ligue-o com o seguinte comando: </h3>
+
+    .\venv\Scripts\activate
+
+<h6> 5.2 Caso esteja utilizando um sistema operacional linux, utilize o seguinte comando: </h3>
+
+    source venv\bin\activate
+
+<h3> 6. Instale os requisitos para rodar o jogo utilizando o seguinte comando: </h3>
+
+    python -r requirements.txt
     
-<h3> 6. Rode o jogo e se divirta! </h3>
+<h3> 7. Rode o jogo e se divirta! </h3>
 
     python main.py
     
 <h2> Esta é a aparência do jogo atualmente </h2>
-<img src="/doc/video.gif"/>
+<img src="/doc/beta1_1.gif"/>
 
 <h2> Versões criadas até o momento </h2>
 <table>
@@ -69,9 +81,67 @@
       <a href="https://github.com/velipefieira/SpaceDefender/tree/Beta1.0"> 🎟️ </a>
     </td>
   </tr>
+  <tr>
+    <td> Beta 1.1 </td>
+    <td align = center>
+      <a href="https://github.com/velipefieira/SpaceDefender/tree/Beta1.1"> 🎟️ </a>
+    </td>
+  </tr>
 </table>
 
-<h2> Funcionalidades </h2>
+<h2> </h2>
+
+<h2> Elementos do jogo </h2>
+<table>
+  <th> Nome </th>
+  <th> Descrição </th>
+  <tr>
+    <td> Player </td>
+    <td> Esta é a nave que você controla, você possui inicialmente 3 vidas, podendo ganhar ou perder vidas ao decorrer do jogo </td>
+    <td> <img src="imgs/player.png" width="30px"/>
+  </tr>
+  <tr>
+    <td> Míssil </td>
+    <td> Este é o projetil que você pode lançar para destruir inimigos, podendo ser lançado apenas um por vez </td>
+    <td> <img src="imgs/missil.png" width="30px"/>
+  </tr>
+    </tr>
+    <tr>
+    <td> Vida </td>
+    <td> Este é o elemento que define a vida do jogador, o jogo termina após ela chegar em 0.</td>
+    <td> <img src="imgs/vida.png" width="30px">
+  </tr>
+  <tr>
+    <td> Alien Verde </td>
+    <td> Este é o inimigo inicial, disponível logo após iniciar o jogo </td>
+    <td> <img src="imgs/alienvd.png" width="30px">
+  </tr>
+    <tr>
+    <td> Alien Azul </td>
+    <td> Este é o inimigo "nível 2", disponível logo após alcançar a marca de 20 pontos </td>
+    <td> <img src="imgs/alienaz.png" width="30px">
+  </tr>
+  </tr>
+    <tr>
+    <td> Alien Vermelho </td>
+    <td> Este é o inimigo "nível 3", disponível logo após alcançar a marca de 40 pontos </td>
+    <td> <img src="imgs/alienvm.png" width="30px">
+  </tr>
+    </tr>
+    <tr>
+    <td> Alien Cinza </td>
+    <td> Este é o inimigo "nível 4", disponível logo após alcançar a marca de 60 pontos </td>
+    <td> <img src="imgs/alienci.png" width="30px">
+  </tr>
+    </tr>
+    <tr>
+    <td> (Un)Lucky Item </td>
+    <td> Este é um item misterioso, gerado ocasionalmente na gameplay, o qual pode oferecer efeitos positivos, como ganho de vida, velocidade e pontos, ou efeitos negativos, como perda de vida ou velocidade. </td>
+    <td> <img src="imgs/lucky.png" width="30px">
+  </tr>
+
+
+</table>
 <table>
   <th> Nome </th>
   <th> Descrição </th>
