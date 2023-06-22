@@ -137,6 +137,13 @@ def sorte():
     else: return False
 
 
+menu_song = "./songs/menu.mp3"
+game_song = ["./songs/ingame/song1.mp3", "./songs/ingame/song2.mp3", "./songs/ingame/song1.mp3"]
+
+def tocar_musica():
+    pygame.mixer.music.load(random.choice(game_song))
+    pygame.mixer.music.play(-1)
+
 jogando = True
 tiro = False
 perdeu = False
@@ -144,6 +151,30 @@ liberar_luck = False
 meteoro = False
 luckys = [0]
 
+#Criando tela de início
+inicio = True
+if inicio:
+    pygame.mixer.music.load(menu_song)
+    pygame.mixer.music.play(-1)
+while inicio:
+    tela.blit(fundo, (0, 0))
+    rel_x = largurafundo % fundo.get_rect().width
+    tela.blit(fundo, (rel_x - fundo.get_rect().width,0))
+    if rel_x < 1000:
+        tela.blit(fundo, (rel_x, 0))
+    largurafundo -= 1
+
+    texto("Space Defender", "center", altura//6, 48)
+    texto("Pressione qualquer tecla para iniciar", "center", altura //4, 48)
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            inicio = False
+            jogando = False
+        if evento.type == pygame.KEYDOWN:
+            inicio = False
+    pygame.display.update()
+
+tocar_musica()
 while jogando:
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
@@ -175,6 +206,7 @@ while jogando:
             for x in range(len(lv_a)):
                 lv_a[x][0], lv_a[x][1] = largura + 50, random.randint(1, altura - 50)
                 lk[0], lk[1] = largura + 50, random.randint(1, altura - 50)
+            tocar_musica()
             player_x, player_y, missil_x, missil_y, vel_missil = reiniciar()
             perdeu = False
         if tecla[pygame.K_ESCAPE]:
@@ -185,6 +217,9 @@ while jogando:
         render_player()
         render_alien()
         render_lucky()
+    
+    #if not pygame.mixer.music.get_busy():
+    #    tocar_musica()
 
     # Vinculando as colisões com as posições
     player_rect.x = player_x
