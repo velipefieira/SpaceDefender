@@ -177,11 +177,6 @@
     <td> :white_check_mark: Concluído </td>
   </tr>
   <tr>
-    <td> Som e Áudio </td>
-    <td> Música e efeitos sonoros que permitem uma maior imersão na gameplay </td>
-    <td> ✖️ Não iniciado </td>
-  </tr>
-  <tr>
     <td> Sistema de fases e progresso </td>
     <td> Permitir que sejam gerados mais inimigos ao passar do tempo </td>
     <td> :white_check_mark: Concluído </td>
@@ -189,13 +184,18 @@
   <tr>
     <td> Geração de obstáculos </td>
     <td> Criar obstáculos que spawnam durante a gameplay, ex: Meteoros. </td>
-    <td> ✖️ Não iniciado </td>
+    <td> :white_check_mark: Concluído </td>
   </tr>
   <tr>
     <td> Sistema de power-ups </td>
     <td> Permitir que o usuário colete power-ups de poder ou vida ao decorrero do jogo. </td>
     <td> :white_check_mark: Concluído </td>
  </tr>
+   <tr>
+    <td> Som e Áudio </td>
+    <td> Música e efeitos sonoros que permitem uma maior imersão na gameplay </td>
+    <td> ⏳ Em desenvolvimento  </td>
+  </tr>
  <tr>
    <td> Multiplayer local </td>
    <td> Tornar disponíveis a gameplay para 1 ou 2 players </td>
