@@ -60,20 +60,20 @@ death = ["Alien verde", "Alien azul", "Alien vermelho", "Alien cinza", "(Un)Luck
 
 #nivel = {x, y, vel}
 lv_a = {
-    0: [largura + random.randint(50, 100), random.randint(1, altura-50), 2],
-    1: [largura + random.randint(50, 100), random.randint(1, altura-50), 2],
-    2: [largura + random.randint(50, 100), random.randint(1, altura-50), 2.25],
-    3: [largura + random.randint(50, 100), random.randint(1, altura-50), 2.5]}
+    0: [largura + random.randint(50, 100), random.randint(100, altura-150), 2],
+    1: [largura + random.randint(50, 100), random.randint(100, altura-150), 2],
+    2: [largura + random.randint(50, 100), random.randint(100, altura-150), 2.25],
+    3: [largura + random.randint(50, 100), random.randint(100, altura-150), 2.5]}
 
-pos_meteoros = {0: [largura + random.randint(1, 72), random.randint(1, altura - 30)],
-                1: [largura + random.randint(1, 72), random.randint(1, altura - 30)]}
+pos_meteoros = {0: [largura + random.randint(1, 72), random.randint(140, altura - 30)],
+                1: [largura + random.randint(1, 72), random.randint(140, altura - 30)]}
 
-lk = [largura + random.randint(1, 50), random.randint(1, altura-50)]
+lk = [largura + random.randint(1, 50), random.randint(140, altura-50)]
 
 #players = {vida, x, y, vel}
 players = {
-    0: [3, random.randint(1, largura//4), random.randint(70, altura-50), 2],
-    1: [3, random.randint(1, largura//4), random.randint(70, altura-50), 2]
+    0: [3, random.randint(1, largura//4), random.randint(140, altura-50), 2],
+    1: [3, random.randint(1, largura//4), random.randint(140, altura-50), 2]
 }
 
 #missies = {x_missil, y_missil, img, tiro}
@@ -98,24 +98,29 @@ def texto(msg, x, y, tamanho):
         tela.blit(mensagem, (x, y))
 
 def render_player():
-    global player_rect
     global player2
     global players
     if players[0][0] > 0:
         tela.blit(player_img, (players[0][1], players[0][2]))
         player_rect.x, player_rect.y = players[0][1], players[0][2]
+    else:
+        player_rect.x = -55
+        missil_rect.x = -55
     if player2:
         global player2_rect
         if players[1][0] > 0:
             tela.blit(player2_img, (players[1][1], players[1][2]))
             player2_rect.x, player2_rect.y = players[1][1], players[1][2]
+        else:
+            player2_rect.x = -55
+            missil2_rect.x = -55
 
 def render_alien():
     for lv in range(4):
         tela.blit(aliens_imgs[lv], (lv_a[lv][0], lv_a[lv][1]))
 
 def respawn_alien(lv):
-    lv_a[lv][0], lv_a[lv][1] = largura + 50, random.randint(1, altura - 50)
+    lv_a[lv][0], lv_a[lv][1] = largura + random.randint(50, 100), random.randint(100, altura-150)
     tela.blit(aliens_imgs[lv], (lv_a[lv][0], lv_a[lv][1]))
 
 def render_missil():
@@ -201,6 +206,16 @@ def respawn_meteoro(x):
 menu_song = "./songs/menu.mp3"
 game_song = ["./songs/ingame/song1.mp3", "./songs/ingame/song2.mp3", "./songs/ingame/song1.mp3"]
 
+dano_som =  pygame.mixer.Sound("./songs/efects/dano_som.mp3")
+missil_som = pygame.mixer.Sound("./songs/efects/missil_som.mp3")
+kill_alien = pygame.mixer.Sound("./songs/efects/kill_alien.mp3")
+power_up = pygame.mixer.Sound("./songs/efects/power_up.mp3")
+power_down = pygame.mixer.Sound("./songs/efects/power_down.mp3")
+meteoro_som = pygame.mixer.Sound("./songs/efects/meteoro_som.mp3")
+
+pygame.mixer.set_num_channels(4)
+canal_alien, canal_player, canal_player2, canal_lucky = pygame.mixer.Channel(0), pygame.mixer.Channel(1), pygame.mixer.Channel(2), pygame.mixer.Channel(3)
+
 def tocar_musica():
     pygame.mixer.music.load(random.choice(game_song))
     pygame.mixer.music.play(-1)
@@ -282,7 +297,8 @@ while jogando:
         texto('Pressione R para jogar novamente.', "center", altura//2, 32)
         texto('Pressione ESC para sair.', "center", altura//2 + 30, 32)
         texto(f"Você morreu para um {motivo}!", "center", altura//4, 32)
-        missil_x = -50
+        player_rect.x = -55
+        missil_rect.x = -55
         tecla = pygame.key.get_pressed()
         if tecla[pygame.K_r]:
             pontuacao = 0 
@@ -296,6 +312,7 @@ while jogando:
             misseis[0], misseis[1] = [players[0][1] + 20, players[0][2] + 20, missil_img, False], [players[1][1] + 20, players[1][2] + 20, missil2_img, False]
             perdeu, liberar_luck = False, False
             meteoro = False
+            luckys = [0]
         if tecla[pygame.K_ESCAPE]:
             jogando = False
 
@@ -310,57 +327,48 @@ while jogando:
             for x in range(2):
                 pos_meteoros[x][0]-= 3
 
-    # Vinculando as colisões com as posições
+        # Vinculando as colisões com as posições
 
-    alienvd_rect.x, alienvd_rect.y = lv_a[0][0], lv_a[0][1]
-    alienaz_rect.x, alienaz_rect.y = lv_a[1][0], lv_a[1][1]
-    alienvm_rect.x, alienvm_rect.y = lv_a[2][0], lv_a[2][1]
-    alienci_rect.x, alienci_rect.y = lv_a[3][0], lv_a[3][1]
+        alienvd_rect.x, alienvd_rect.y = lv_a[0][0], lv_a[0][1]
+        alienaz_rect.x, alienaz_rect.y = lv_a[1][0], lv_a[1][1]
+        alienvm_rect.x, alienvm_rect.y = lv_a[2][0], lv_a[2][1]
+        alienci_rect.x, alienci_rect.y = lv_a[3][0], lv_a[3][1]
 
-    lucky_rect.x, lucky_rect.y = lk[0], lk[1]
+        lucky_rect.x, lucky_rect.y = lk[0], lk[1]
 
-    if colisao():
-        if colisao()[1] == "P":
-            pontuacao += 1
-            respawn_alien(int(colisao()[0]))
-            respawn_missil(int(colisao()[2]))    
-        if colisao()[1] == "V":
-            players[int(colisao()[2])][0] -= 1
-            if not players[int(colisao()[2])][0]:
-                motivo = death[int(colisao()[0])]
-            if colisao()[0] == "5":
+        if colisao():
+            if colisao()[1] == "P":
+                canal_alien.play(kill_alien)
+                pontuacao += 1
+                respawn_alien(int(colisao()[0]))
+                respawn_missil(int(colisao()[2]))    
+            if colisao()[1] == "V":
+                canal_alien.play(dano_som)
+                players[int(colisao()[2])][0] -= 1
                 if not players[int(colisao()[2])][0]:
-                    motivo = death[5]
-            else: 
-                respawn_alien(int(colisao()[0]))  
-        if colisao()[1] == "FG":
-            players[int(colisao()[2])][0] -= 1
-            respawn_missil(int(colisao()[3]))    
-            if not players[int(colisao()[2])][0]:
-                motivo = death[int(colisao()[0])]
-    
-    for x in range(len(lv_a)):
-        if (pontuacao//20) >= x:
-            lv_a[x][0] -= lv_a[x][2]
-            if lv_a[x][0] <= -55:
-                respawn_alien(x)
-            if not player2:
-                if pontuacao <= 60:
-                    if lv_a[x][1] > players[0][2] :
-                        lv_a[x][1] -= int(lv_a[x][2]) // 2
-                    if lv_a[x][1] < players[0][2]:
-                        lv_a[x][1] += int(lv_a[x][2]) // 2  
-                else:
-                    if lv_a[x][1] > players[0][2] + 40:
-                        lv_a[x][1] -= int(lv_a[2][2]) // 2
-                    if lv_a[x][1] < players[0][3] - 40:
-                        lv_a[x][1] += int(lv_a[x][2]) // 2    
-                    if players[0][2] - 40 <= lv_a[x][1] <= players[0][2] + 40:
-                        lv_a[x][1] += lv_a[x][2] * math.sin(largura - lv_a[x][0] / 100)
+                    motivo = death[int(colisao()[0])]
+                if colisao()[0] == "5":
+                    if not players[int(colisao()[2])][0]:
+                        motivo = death[5]
+                else: 
+                    respawn_alien(int(colisao()[0]))  
+            if colisao()[1] == "FG":
+                canal_alien.play(dano_som)
+                players[int(colisao()[2])][0] -= 1
+                respawn_missil(int(colisao()[3]))    
+                if not players[int(colisao()[2])][0]:
+                    motivo = death[int(colisao()[0])]
+        
+        for x in range(len(lv_a)):
+            if (pontuacao//20) >= x:
+                lv_a[x][0] -= lv_a[x][2]
+                if lv_a[x][0] <= -55:
+                    respawn_alien(x)                 
+                #lv_a[x][1] += lv_a[x][2] * math.sin(largura - lv_a[x][0] / 75)
 
-    for x in range(2):
-        if pos_meteoros[x][0] < -30:
-            respawn_meteoro(x)
+        for x in range(2):
+            if pos_meteoros[x][0] < -30:
+                respawn_meteoro(x)
 
     # Configurando os Un(Lucky) Itens
     if pontuacao % 15 == 0 and pontuacao not in luckys:
@@ -371,75 +379,85 @@ while jogando:
         number = random.randint(1, 100)
         if number < 10:
             meteoros = True
+            canal_lucky.play(meteoro_som)
         if 10 <= number <= 50:
             players[int(sorte()[1])][3] -= 0.5
+            canal_lucky.play(power_down)
         if 25 < number < 50:
             players[int(sorte()[1])][0] -= 1
+            canal_lucky.play(dano_som)
             if not players[int(sorte()[1])][0]:
-                motivo.append (death[4])
+                motivo = (death[4])
         if 50 <= number <= 75:
             players[int(sorte()[1])][0] += 1
+            canal_lucky.play(power_up)
         if 75 < number:
             players[int(sorte()[1])][3] += 0.5
-            if number == 99:
+            canal_lucky.play(power_up)
+            if number == 100:
                 pontuacao += 100
+                canal_lucky.play(power_up)
         lk[0] = largura + 50
         lk[1] = random.randint(1, altura-50)
             
 
     # Configurando os comandos de movimentação
-    tecla = pygame.key.get_pressed()
-    if tecla[pygame.K_w] and players[0][2] > 1:
-        players[0][2] -= players[0][3]
-    if tecla[pygame.K_s] and players[0][2] < 650:
-        players[0][2] += players[0][3]
-    if tecla[pygame.K_a] and players[0][1] > 1:
-        players[0][1] -= players[0][3]
-    if tecla[pygame.K_d] and players[0][1] < 950:
-        players[0][1] += players[0][3] 
-    if not misseis[0][3]:
-        misseis[0][0], misseis[0][1] = players[0][1] + 20, players[0][2] + 20
-    if tiro:
-        misseis[0][0] += 4
-    if player2:
-        if tecla[pygame.K_UP] and players[1][2] > 1:
-            players[1][2] -= players[1][3]
-        if tecla[pygame.K_DOWN] and players[1][2] < 650:
-            players[1][2] += players[1][3]
-        if tecla[pygame.K_LEFT] and players[1][1] > 1:
-            players[1][1] -= players[1][3]
-        if tecla[pygame.K_RIGHT] and players[1][1] < 950:
-            players[1][1] += players[1][3]
-        if not misseis[1][3]:
-            misseis[1][0], misseis[1][1] = players[1][1] + 20, players[1][2] + 20
+    if not perdeu:
+        tecla = pygame.key.get_pressed()
+        if tecla[pygame.K_w] and players[0][2] > 1:
+            players[0][2] -= players[0][3]
+        if tecla[pygame.K_s] and players[0][2] < 650:
+            players[0][2] += players[0][3]
+        if tecla[pygame.K_a] and players[0][1] > 1:
+            players[0][1] -= players[0][3]
+        if tecla[pygame.K_d] and players[0][1] < 950:
+            players[0][1] += players[0][3] 
+        if not misseis[0][3]:
+            misseis[0][0], misseis[0][1] = players[0][1] + 20, players[0][2] + 20
         if tiro:
-            misseis[1][0] += 4
+            misseis[0][0] += 4
+        if player2:
+            if tecla[pygame.K_UP] and players[1][2] > 1:
+                players[1][2] -= players[1][3]
+            if tecla[pygame.K_DOWN] and players[1][2] < 650:
+                players[1][2] += players[1][3]
+            if tecla[pygame.K_LEFT] and players[1][1] > 1:
+                players[1][1] -= players[1][3]
+            if tecla[pygame.K_RIGHT] and players[1][1] < 950:
+                players[1][1] += players[1][3]
+            if not misseis[1][3]:
+                misseis[1][0], misseis[1][1] = players[1][1] + 20, players[1][2] + 20
+            if tiro:
+                misseis[1][0] += 4
 
-    # Configurando o missil
-    if player2:
+        # Configurando o missil
+        if player2:
+            for x in range(2):
+                if misseis[x][0] > largura:
+                    respawn_missil(x)
+        else:
+            if misseis[0][0] > largura:
+                respawn_missil(0)
+        
+        if tecla[pygame.K_SPACE] and not misseis[0][3]:
+            misseis[0][3] = True
+            canal_player.play(missil_som)
+        if player2:
+            if tecla[pygame.K_BACKSPACE] and not misseis[1][3]:
+                misseis[1][3] = True
+                canal_player2.play(missil_som)
+
         for x in range(2):
-            if misseis[x][0] > largura:
-                respawn_missil(x)
-    else:
-        if misseis[0][0] > largura:
-            respawn_missil(0)
-    
-    if tecla[pygame.K_SPACE]:
-        misseis[0][3] = True
-    if player2:
-        if tecla[pygame.K_BACKSPACE]:
-            misseis[1][3] = True
+            if misseis[x][3] == True:
+                misseis[x][0] += 4
 
-    for x in range(2):
-        if misseis[x][3] == True:
-            misseis[x][0] += 4
-
-    # Infos exibidas na hud
-    tela.blit(player_img, (5, 5))
+        # Infos exibidas na hud
+        tela.blit(player_img, (5, 5))
     for x in range(players[0][0]):
         tela.blit(vida_img, (50*x + 50, 5))
     if player2:
-        tela.blit(player2_img, (5, 55))
+        if not perdeu:
+            tela.blit(player2_img, (5, 55))
         for x in range(players[1][0]):
             tela.blit(vida_img, (50*x + 50, 55))
         texto(f"Pontuação: {pontuacao}", 5, 110, 32)
