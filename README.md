@@ -9,8 +9,8 @@
 <h4> Seu principal objetivo é enfrentar as hordas de naves alienígenas e manter a segurança do planeta (por enquanto). </h4>
 
 <h2> 📌 Status do projeto </h2>
-<h4> ⏳ Em testes finais </h4>
-<h4> 📅 Estimativa de conclusão: Final de 2023 </h4>
+<h4> :white_check_mark: Concluído </h4>
+<h4> 📅 Lançamento: 01/07/2023 </h4>
 
 <h2> 🖥️ Tecnologia utilizada </h2>
     <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
@@ -42,21 +42,31 @@
 </table>
 
 <h2> 🎮 Como rodar o jogo</h2>
-<h3>1. É preciso que você possua o <a href="https://git-scm.com/downloads"> Git </a> e o <a href="https://www.python.org/downloads/"> Python </a> instalado. </h3>
-<h3> 2. Pesquise por terminal na barra de tarefas  do seu dispositivo e abra o terminal. </h3>
-<h3> 3. Clone o repositório inserindo este comando: </h3>
+<h3> Opção 1 - Download do executável </h3>
+<h4> 1. Acesse este link <a href="https://drive.google.com/drive/folders/19oQuNZC7s2HQzrWJwa-HCl4a_pUpXVhT?usp=sharing"> aqui </a> </h4>
+<h4> 2. Baixe todos os arquivos da pasta e aguarde o download </h4>
+<h4> 3. Clique na setinha para cima  e depois em "Mostrar na pasta" </h4>
+<h4> 4. Após entrar na pasta "Downloads", clique com o botão direito na pasta compactada e extraia </h4>
+<h5> 4.1 A opção pode variar de acordo com o sistema operacional, "Extrair aqui", "Extrair tudo". </h5>
+<h4> 5. Depois de extraído, abra o SpaceDefender.exe </h4>
+<h4> 6. Divirta-se! </h4>
+<br>
+<h3> Opção 2 - Clonar repositório </h3>
+<h4> 1. É preciso que você possua o <a href="https://git-scm.com/downloads"> Git </a> e o <a href="https://www.python.org/downloads/"> Python </a> instalado. </h4>
+<h4> 2. Pesquise por terminal na barra de tarefas  do seu dispositivo e abra o terminal. </h4>
+<h4> 3. Clone o repositório inserindo este comando: </h4>
 
     git clone https://github.com/velipefieira/SpaceDefender.git
 
-<h3> 4. Após clonar o repositório, entre na pasta do projeto. </h3>
+<h4> 4. Após clonar o repositório, entre na pasta do projeto. </h4>
 
     cd SpaceDefender
 
-<h3> 5. Se preferir, crie um ambiente virtual para rodar o jogo com os seguintes comandos (opcional): </h3>
+<h4> 5. Se preferir, crie um ambiente virtual para rodar o jogo com os seguintes comandos (opcional): </h4>
 
     python -m venv venv
 
-<h3> 5.1 Caso tenha criado o ambiente virtual, ligue-o com o seguinte comando: </h3>
+<h4> 5.1 Caso tenha criado o ambiente virtual, ligue-o com o seguinte comando: </h4>
 
     .\venv\Scripts\activate
 
@@ -64,16 +74,16 @@
 
     source venv\bin\activate
 
-<h3> 6. Instale os requisitos para rodar o jogo utilizando o seguinte comando: </h3>
+<h4> 6. Instale os requisitos para rodar o jogo utilizando o seguinte comando: </h4>
 
     python -r requirements.txt
     
-<h3> 7. Rode o jogo e se divirta! </h3>
+<h4> 7. Rode o jogo com o seguinte comando e se divirta! </h4>
 
     python main.py
     
-<h2> Esta é a aparência do jogo atualmente </h2>
-<img src="/doc/beta2_0.gif"/>
+<h2> Esta é a aparência do jogo </h2>
+<img src="/doc/v1_0.gif"/>
 
 <h2> Versões criadas até o momento </h2>
 <table>
@@ -101,6 +111,12 @@
       <td> Beta 2.0 </td>
       <td align=center>
           <a href="https://github.com/velipefieira/SpaceDefender/tree/Beta2.0"> 🎟️ </a>
+      </td>
+  </tr>
+    <tr>
+      <td> V 1.0 </td>
+      <td align=center>
+          <a href="https://github.com/velipefieira/SpaceDefender/tree/V1.0"> 🎟️ </a>
       </td>
   </tr>
 </table>
@@ -160,6 +176,8 @@
 
 
 </table>
+
+<h3> :hammer: Funcionalidades </h3>
 <table>
   <th> Nome </th>
   <th> Descrição </th>
@@ -212,7 +230,7 @@
    <tr>
     <td> Som e Áudio </td>
     <td> Música e efeitos sonoros que permitem uma maior imersão na gameplay </td>
-    <td> ⏳ Em desenvolvimento  </td>
+    <td> :white_check_mark: Concluído  </td>
   </tr>
  <tr>
    <td> Multiplayer local </td>
