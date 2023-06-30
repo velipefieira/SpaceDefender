@@ -60,10 +60,10 @@ death = ["Alien verde", "Alien azul", "Alien vermelho", "Alien cinza", "(Un)Luck
 
 #nivel = {x, y, vel}
 lv_a = {
-    0: [largura + random.randint(50, 100), random.randint(100, altura-150), 2],
-    1: [largura + random.randint(50, 100), random.randint(100, altura-150), 2],
-    2: [largura + random.randint(50, 100), random.randint(100, altura-150), 2.25],
-    3: [largura + random.randint(50, 100), random.randint(100, altura-150), 2.5]}
+    0: [largura + random.randint(50, 100), random.randint(100, altura-150), 1.25],
+    1: [largura + random.randint(50, 100), random.randint(100, altura-150), 1.5],
+    2: [largura + random.randint(50, 100), random.randint(100, altura-150), 2.],
+    3: [largura + random.randint(50, 100), random.randint(100, altura-150), 2.25]}
 
 pos_meteoros = {0: [largura + random.randint(1, 72), random.randint(140, altura - 30)],
                 1: [largura + random.randint(1, 72), random.randint(140, altura - 30)]}
@@ -364,7 +364,7 @@ while jogando:
                 lv_a[x][0] -= lv_a[x][2]
                 if lv_a[x][0] <= -55:
                     respawn_alien(x)                 
-                #lv_a[x][1] += lv_a[x][2] * math.sin(largura - lv_a[x][0] / 75)
+                lv_a[x][1] += lv_a[x][2] * math.sin(largura - lv_a[x][0] / 75)
 
         for x in range(2):
             if pos_meteoros[x][0] < -30:
