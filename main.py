@@ -244,7 +244,8 @@ while inicio:
 
     texto("Space Defender", "center", altura//6, 48)
     texto("Selecione a quantidade de jogadores", "center", altura //4, 48)
-    texto("(Pressione enter)", "center", altura//4+50, 16)
+    texto("Selecione com < ou >", 5, altura - 55, 24)
+    texto("Confirmar com Enter", 5, altura - 35, 24)
     if z % 2 == 0:
         texto("1 Player", 290, altura//4*3 - 10, 44)
         texto("2 Players", 600, altura//4*3, 32)
@@ -270,6 +271,12 @@ else:
     player2 = True
 
 tocar_musica()
+
+if not player2:
+    players[1][0] = - 100
+    misseis[1][0] = - 100
+    player2_rect.x = - 100
+    missil2_rect.x = - 100
 while jogando:
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
@@ -311,7 +318,7 @@ while jogando:
             players[0], players[1] = [3, random.randint(1, largura//4), random.randint(70, altura-50), 2], [3, random.randint(1, largura//4), random.randint(70, altura-50), 2]
             misseis[0], misseis[1] = [players[0][1] + 20, players[0][2] + 20, missil_img, False], [players[1][1] + 20, players[1][2] + 20, missil2_img, False]
             perdeu, liberar_luck = False, False
-            meteoro = False
+            meteoros = False
             luckys = [0]
         if tecla[pygame.K_ESCAPE]:
             jogando = False
@@ -364,7 +371,7 @@ while jogando:
                 lv_a[x][0] -= lv_a[x][2]
                 if lv_a[x][0] <= -55:
                     respawn_alien(x)                 
-                lv_a[x][1] += lv_a[x][2] * math.sin(largura - lv_a[x][0] / 75)
+                #lv_a[x][1] += lv_a[x][2] * math.sin(largura - lv_a[x][0] / 75)
 
         for x in range(2):
             if pos_meteoros[x][0] < -30:
